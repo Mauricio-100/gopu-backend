@@ -1,0 +1,27 @@
+{
+  "name": "gopu-backend",
+  "version": "1.0.0",
+  "description": "Agentic backend for GopuOS powered by Google Generative AI (Gemini)",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.5.0",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2"
+  },
+  "keywords": [
+    "gopu",
+    "agentic",
+    "gemini",
+    "generative-ai",
+    "express",
+    "backend",
+    "llm",
+    "linux-only"
+  ],
+  "author": "Ceose",
+  "license": "MIT"
+}
