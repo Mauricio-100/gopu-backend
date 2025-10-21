@@ -72,6 +72,17 @@ app.get('/', (req, res) => {
   res.send('✅ GopuOS Agentic Backend is running');
 });
 
+// pour savoir si il fonction
+app.get('/test-gemini', async (req, res) => {
+  try {
+    const result = await model.generateContent('ping');
+    res.send(result.response.text());
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
 // 🚀 Lancement
 const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
