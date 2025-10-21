@@ -10,14 +10,14 @@ app.use(express.json());
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
 
-// Middleware de vérification du token
+// Middleware Bearer simple
 function verifyToken(req, res, next) {
   const auth = req.headers.authorization;
   if (!auth || !auth.startsWith('Bearer ')) {
     return res.status(401).json({ error: 'Token manquant ou invalide' });
   }
 
-  const token = auth.split(' ')[1];
+  const token = auth.slice(7);
   if (token !== process.env.AGENT_TOKEN) {
     return res.status(403).json({ error: 'Accès refusé' });
   }
@@ -25,7 +25,7 @@ function verifyToken(req, res, next) {
   next();
 }
 
-// Endpoint sécurisé
+// 🔐 Endpoint sécurisé
 app.post('/agent', verifyToken, async (req, res) => {
   const { prompt } = req.body;
   try {
@@ -38,12 +38,24 @@ app.post('/agent', verifyToken, async (req, res) => {
   }
 });
 
-// Endpoint public
-app.get('/', (req, res) => {
-  res.send('✅ GopuOS Agentic Backend is running');
+// 🧠 Endpoint token-info
+app.get('/token-info', verifyToken, (req, res) => {
+  res.json({
+    verified: true,
+    token: 'sk-***************',
+    role: 'admin',
+    agent: 'Gemini',
+    issued_by: 'GopuOS',
+    expires: 'never'
+  });
 });
 
-// Endpoint de statut
+// 🏷️ Badge “Verified”
+app.get('/badge', (req, res) => {
+  res.redirect('https://img.shields.io/badge/GopuOS-Verified-blue?logo=linux');
+});
+
+// 📊 Statut système
 app.get('/status', (req, res) => {
   res.json({
     status: '🟢 Online',
@@ -55,7 +67,12 @@ app.get('/status', (req, res) => {
   });
 });
 
-// Lancement du serveur
+// 🏁 Accueil
+app.get('/', (req, res) => {
+  res.send('✅ GopuOS Agentic Backend is running');
+});
+
+// 🚀 Lancement
 const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
   console.log(`🚀 Backend GopuOS actif sur le port ${PORT}`);
