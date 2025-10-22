@@ -34,7 +34,7 @@ Usage:
   gopu db --test            → Teste la base MySQL
 """)
 
-if __name__ == "__main__":
+def main():
     if len(sys.argv) < 2:
         help()
     elif sys.argv[1] == "status":
